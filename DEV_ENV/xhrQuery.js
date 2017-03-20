@@ -7,14 +7,19 @@
 /** ---																																						--- **
 /** ---		AUTEUR 	: Neoblaster																													--- **
 /** ---																																						--- **
-/** ---		RELEASE	: 18.05.2015																													--- **
+/** ---		RELEASE	: 20.03.2017																													--- **
 /** ---																																						--- **
-/** ---		VERSION	: 1.2																																--- **
+/** ---		VERSION	: 1.3																																--- **
 /** ---																																						--- **
 /** ---																																						--- **
 /** --- 														-----------------------------															--- **
 /** --- 															 { C H A N G E L O G } 																--- **
 /** --- 														-----------------------------															--- **
+/** ---																																						--- **
+/** ---		VERSION 1.3 : 20.03.2017																												--- **
+/** ---		------------------------																												--- **
+/** ---			- Ajout de la méthode forms() qui gère l'assimilation des données comprise dans le formulaire donnée		--- **
+/** ---			- En conséquence amélioration de la fonctions input pour gérer davantage d'input									--- **
 /** ---																																						--- **
 /** ---		VERSION 1.2 : 18.05.2015																												--- **
 /** ---		------------------------																												--- **
@@ -108,6 +113,16 @@
 /** ---																																						--- **
 /** ---																																						--- **
 /** ---																																						--- **
+/** ---		forms :																																		--- **
+/** ---		--------																																		--- **
+/** ---			- output :: [xhrQuery]				::	renvois la classe pour une utilisation successive							--- **
+/** ---			- input	:: [HTMLFormElement]		::	Accepte autant de formulaire que désirée										--- **
+/** ---																																						--- **
+/** ---			- Description	::																														--- **
+/** ---				La méthode permet d'envoyer toute les données du/des formulaire(s) donnée										--- **
+/** ---																																						--- **
+/** ---																																						--- **
+/** ---																																						--- **
 /** ----------------------------------------------------------------------------------------------------------------------- **
 /** ----------------------------------------------------------------------------------------------------------------------- **
 
@@ -184,7 +199,6 @@ function xhrQuery(){
 	this.xhr_send_file = false;				// Boolean			:: Indique si des données issue d'un input type file à été inséré
 
 	
-	
 	/** -------------------------------------------------------------------------------------------------------------------- **
 	/** ---																																					--- **
 	/** ---											Déclaration des méthodes de l'instance xhrQuery											--- **
@@ -198,7 +212,32 @@ function xhrQuery(){
 			if(typeof(arguments[i]) === 'function'){
 				this.xhr_callbacks.push(arguments[i]);
 			} else {
-				this.xhr_errors.push({"error_level":2,"error_message":"callback() :: The input callback '"+arguments[i]+"' is not a function."});
+				this.xhr_errors.push({"error_level":2,"error_message":"xhrQuery::callback() :: The input callback '"+arguments[i]+"' is not a function."});
+			}
+		}
+		
+		return this;
+	};
+	
+	
+	/** -------------------------------------------------------------------------------------------------------------------- **/
+	/** > Méthode pour ajouter les données d'un formulare passé en argument **/
+	this.forms = function(form){
+		/** Au moins un argument est attendu **/
+		if(form === undefined){
+			this.xhr_errors.push({"error_level":2,"error_message":"xhrQuery::forms() :: At least one HTMLFormElement is required."});
+		}
+		
+		/** Parcourir les arguments **/
+		for(var arg in arguments){
+			if(arguments[arg] instanceof HTMLFormElement){
+				/** Parcourir les éléments qui compose le formulaire (nativement) **/
+				for(var el = 0; el < arguments[arg].elements.length; el++){
+					var element = arguments[arg].elements[el];
+					this.inputs(element);
+				}
+			} else {
+				this.xhr_errors.push({"error_level":2,"error_message":"xhrQuery::forms() :: Argument n°"+arg+" supplied is invalid : ["+typeof(arguments[arg])+"] "+arguments[arg]+"."});
 			}
 		}
 		
@@ -223,46 +262,83 @@ function xhrQuery(){
 			
 			/** Analyse de l'entrée **/
 			if(input === null){
-				this.xhr_errors.push({"error_level":2,"error_message":"inputs() :: The input number "+i+" doesn't not exist -> input ignored."});
-			} else {
-				/** Récupérer le type de l'input pour y traiter les données **/
-				var input_type = input.getAttribute('type');
+				this.xhr_errors.push({"error_level":2,"error_message":"xhrQuery::inputs() :: The input number "+i+" doesn't not exist -> input ignored."});
+			}
+			else {
+				var input_name = input.getAttribute('name');
 				
-				if(input_type !== null){
-					/** Intégration des données **/
-					switch(input_type){
-						/** Input de type file **/
-						case 'file':
-							/** Parcourir les fichiers (cas potentiel d'un input multiple) **/
-							for(var f = 0; f < input.files.length; f++){
-								this.xhr_form_data.append('file[]', input.files[f]);
+				/** Uniquement si l'input à un attribut name **/
+				if(input_name !== null){
+					/** Selon la nature de l'élement **/
+					switch(input.tagName.toUpperCase()){
+						case "INPUT":
+							/** Récupérer le type de l'input pour y traiter les données **/
+							var input_type = input.getAttribute('type');
+							
+							if(input_type !== null){
+								/** Intégration des données **/
+								switch(input_type){
+									/** Input de type file **/
+									case 'file':
+										/** Parcourir les fichiers (cas potentiel d'un input multiple) **/
+										for(var f = 0; f < input.files.length; f++){
+											this.xhr_form_data.append('file[]', input.files[f]);
+										}
+										this.xhr_send_file = true;
+									break;
+									
+									/** Input de type : text, password, hidden **/
+									case 'text':
+									case 'password':
+									case 'hidden':
+										this.xhr_form_data.append(input_name, input.value);
+										this.xhr_raw_data.push(input_name+'='+input.value);
+									break;
+										
+									/** Input de type : radio **/
+									case 'radio':
+										if(input.checked){
+											this.xhr_form_data.append(input_name, input.value);
+											this.xhr_raw_data.push(input_name+'='+input.value);
+										}
+									break;
+										
+									/** Input de type : checkbox **/
+									case 'checkbox':
+										if(input.checked){
+											this.xhr_form_data.append(input_name, input.value);
+											this.xhr_raw_data.push(input_name+'='+input.value);
+										}
+									break;
+										
+									default:
+										this.xhr_errors.push({"error_level":2,"error_message":"xhrQuery::inputs() :: The input number "+i+" with type = "+input_type+" not managed with xhrQuery() -> input ignored."});
+									break;
+								}
 							}
-							this.xhr_send_file = true;
-						break;
-
-						/** Input de type : text, password, hidden **/
-						case 'text':
-						case 'password':
-						case 'hidden':
-							var input_name = input.getAttribute('name');
-							var input_value = input.value;
-
-							if(input_name !== null){
-								this.xhr_form_data.append(input_name, input_value);
-								this.xhr_raw_data.push(input_name+'='+input_value);
-							} else {
-								this.xhr_errors.push({"error_level":2,"error_message":"inputs() :: The input number "+i+" don't have attribut name -> input ignored."});
+							else {
+								this.xhr_errors.push({"error_level":2,"error_message":"xhrQuery::inputs() :: The input number "+i+" has no attribut type -> input ignored"});
 							}
 						break;
+						
+						case "SELECT":
+							if(input.options.length > 0){
+								this.xhr_form_data.append(input_name, input.value);
+								this.xhr_raw_data.push(input_name+'='+input.value);
+							} 
+							else {
+								this.xhr_errors.push({"error_level":2,"error_message":"xhrQuery::inputs() :: The select input "+input+" has no options -> input ignored"});
+							}
+						break;
+						
 						default:
-							this.xhr_errors.push({"error_level":2,"error_message":"inputs() :: The input number "+i+" with type = "+input_type+" not managed with xhrQuery() -> input ignored."});
 						break;
 					}
-				} else {
-					this.xhr_errors.push({"error_level":2,"error_message":"inputs() :: The input number "+i+" don't have attribut type -> input ignored"});
+				}
+				else {
+					this.xhr_errors.push({"error_level":2,"error_message":"xhrQuery::inputs() :: The input number "+i+" don't have attribut name -> input ignored"});
 				}
 			}
-			
 		}
 		
 		return this;
@@ -282,7 +358,7 @@ function xhrQuery(){
 		if(methods.lastIndexOf(method) > -1){
 			this.xhr_method = method;
 		} else {
-			this.xhr_errors.push({"error_level":2,"error_message":"methode() :: The method '"+method+"' is not allowed : use 'get' or 'post'"});
+			this.xhr_errors.push({"error_level":2,"error_message":"xhrQuery::methode() :: The method '"+method+"' is not allowed : use 'get' or 'post'"});
 		}
 
 		/** auto-renvois **/
@@ -297,7 +373,7 @@ function xhrQuery(){
 		if(typeof(progress) === 'function'){
 			this.xhr_progress = progress;
 		} else {
-			this.xhr_errors.push({"error_level":2,"error_message":"progress() :: The input progress '"+progress+"' is not a function."});
+			this.xhr_errors.push({"error_level":2,"error_message":"xhrQuery::progress() :: The input progress '"+progress+"' is not a function."});
 		}
 
 		
@@ -357,7 +433,7 @@ function xhrQuery(){
 					
 					/** Emettre l'alerte si des données de type input file on été saisies **/
 					if(this.xhr_send_file){
-						this.xhr_errors.push({"error_level":2,"error_message":"send() :: Datas sent with 'GET' method. The files datas has not been sent."});
+						this.xhr_errors.push({"error_level":2,"error_message":"xhrQuery::send() :: Datas sent with 'GET' method. The files datas has not been sent."});
 					}
 					
 					/** Envoyer les données **/
