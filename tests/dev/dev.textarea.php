@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<script src="xhrQuery.js"></script>
+		<script src="../../src/xhrQuery.js"></script>
 		<script>
 			function send(form){
 				var xQ = new xhrQuery();

@@ -4,7 +4,7 @@
 
 	print_r($_REQUEST);
 
-	//print_r($_FILES);
+	print_r($_FILES);
 
 	//$_FILES = fixFilesArray($_FILES);
 
