@@ -1,6 +1,6 @@
 # xhrQuery
 
-Toutes les fonctionnalités AJAX à portée de main.
+Toutes les fonctionnalités **AJAX** à portée de main.
 
 ## Status
 
@@ -170,7 +170,7 @@ new xhrQuery().target('script_cible.php').callbacks(afficherReponse.bind('', 're
 La réponse de la requête sera toujours le dernier paramètre.
 
 Dans notre exemple nous admettons deux paramètres et nous en bindons deux.
-Cependant le premier paramètre ````, définit la référence ``this`` au sein de la fonction.
+Cependant le premier paramètre `'''`, définit la référence ``this`` au sein de la fonction.
 Ici nous n'en avons pas besoin, mais si vous utiliser le moteur ``xhrQuery`` dans une classe
 **JavaScript**, alors il faudra remplacer `''` par ``this``,
 a moins d'avoir créer une variable **locale** ``self`` (ou équivalent)
@@ -191,6 +191,8 @@ Celui-ci devra obligatoirement disposer de l'attribut ``name``
 tel qu'on le trouverez dans un formulaire classique.
 
 * ``HTLMInputElement``.
+* ``HTLMSlectElement``.
+* ``HTLMTextAreaElement``.
 
 La dernière manière d'envoyer des données est d'envoyer le formulaire complet.
 Celà à l'avantage d'envoyer une grande quantitié de donnée avec un minimum d'instruction
