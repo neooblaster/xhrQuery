@@ -29,7 +29,7 @@
 
         <a href="./">-- Parent Folder --</a>
 		
-		<form methode="post" action="" onsubmit="new xhrQuery().target('dev.target.php').callbacks(function(e){document.querySelector('#console').innerHTML = e;}).forms(this, 'otherone').send(); return false;">
+		<form methode="post" action="" onsubmit="new xhrQuery().target('dev.target.php').callbacks(function(e){document.querySelector('#console').innerHTML = e;}).forms(this, 'otherone').send(); return false;" id="xhrForm">
             <?php include 'dev.fields.html'; ?>
 		</form>
 		
