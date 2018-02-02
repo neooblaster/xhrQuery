@@ -1,0 +1,13 @@
+{
+    "name": "neooblaster/xhrquery",
+    "description": "A JavaScript class focused on AJAX technology. It simplify AJAX integration for non jQuery users.",
+    "type": "library",
+    "keywords": ["JavaScript", "AJAX", "XMLHttpRequest", "dot notation"],
+    "authors": [
+        {
+            "name": "Nicolas DUPRE",
+            "email": "neo-blaster@hotmail.fr",
+            "role": "Developer"
+        }
+    ]
+}
