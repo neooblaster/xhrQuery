@@ -65,96 +65,8 @@
 /** ---        ------------------------                                                                          --- **
 /** ---            - Première release                                                                            --- **
 /** ---                                                                                                          --- **
-/** ---                                             -----------------------------------------------------                                        --- **
-/** ---                                                 { L I S T E      D E S      M E T H O D E S }                                             --- **
-/** ---                                             -----------------------------------------------------                                        --- **
-/** ---                                                                                                                                                        --- **
-/** ---        callbacks :                                                                                                                                    --- **
-/** ---        -----------                                                                                                                                    --- **
-/** ---            - output :: [xhrQuery]    ::    renvois la classe pour une utilisation successive                                        --- **
-/** ---            - input    :: [function]    ::    acecpte x fonctions en paramètre                                                                --- **
-/** ---                                                                                                                                                        --- **
-/** ---            - Description    ::                                                                                                                        --- **
-/** ---                La fonction de callback est la fonction qui traiter la réponse retournée par le serveur                    --- **
-/** ---                                                                                                                                                        --- **
-/** ---                                                                                                                                                        --- **
-/** ---                                                                                                                                                        --- **
-/** ---        inputs :                                                                                                                                        --- **
-/** ---        --------                                                                                                                                        --- **
-/** ---            - output :: [xhrQuery]            ::    renvois la classe pour une utilisation successive                                --- **
-/** ---            - input    :: [string][element]    ::    accepte des id sous forme de chaine ou des elements HTML input                --- **
-/** ---                                                                                                                                                        --- **
-/** ---            - Description    ::                                                                                                                        --- **
-/** ---                La fonction parcour l'ensemble des arguments à la recherche d'un couple nom de variable / valeur        --- **
-/** ---                La fonction est autonôme. Elle determine toutes les infos elle-même                                                --- **
-/** ---                                                                                                                                                        --- **
-/** ---                                                                                                                                                        --- **
-/** ---                                                                                                                                                        --- **
-/** ---        method :                                                                                                                                        --- **
-/** ---        --------                                                                                                                                        --- **
-/** ---            - output :: [xhrQuery]    ::    renvois la classe pour une utilisation successive                                        --- **
-/** ---            - input    :: [string]        ::    accepte 'get' ou 'post'                                                                            --- **
-/** ---                                                                                                                                                        --- **
-/** ---            - Description    ::                                                                                                                        --- **
-/** ---                La fonction définie le mode d'émission des données pour la méthode send()                                        --- **
-/** ---                                                                                                                                                        --- **
-/** ---                                                                                                                                                        --- **
-/** ---                                                                                                                                                        --- **
-/** ---        progress :                                                                                                                                    --- **
-/** ---        ----------                                                                                                                                    --- **
-/** ---            - output :: [xhrQuery]    ::    renvois la classe pour une utilisation successive                                        --- **
-/** ---            - input    :: [function]    ::    accepte une fonction'                                                                            --- **
-/** ---                                                                                                                                                        --- **
-/** ---            - Description    ::                                                                                                                        --- **
-/** ---                La méthode définie la fonction de traitement de l'avancement d'un upload de fichier                            --- **
-/** ---                                                                                                                                                        --- **
-/** ---                                                                                                                                                        --- **
-/** ---                                                                                                                                                        --- **
-/** ---        send :                                                                                                                                        --- **
-/** ---        ------                                                                                                                                        --- **
-/** ---            - output :: [boolean]    ::    renvois la classe pour une utilisation successive                                        --- **
-/** ---            - input    :: [-]            ::    aucun paramètres                                                                                    --- **
-/** ---                                                                                                                                                        --- **
-/** ---            - Description    ::                                                                                                                        --- **
-/** ---                La méthode déclenche l'envois de la requête auprès de la cible à l'aide des données saisie                --- **
-/** ---                La methodes send() doit être toujours invoquer en dernier, sinon les donnée suivante ne seront pas     --- **
-/** ---                traité                                                                                                                                --- **
-/** ---                                                                                                                                                        --- **
-/** ---                                                                                                                                                        --- **
-/** ---                                                                                                                                                        --- **
-/** ---        target :                                                                                                                                        --- **
-/** ---        --------                                                                                                                                        --- **
-/** ---            - output :: [xhrQuery]    ::    renvois la classe pour une utilisation successive                                        --- **
-/** ---            - input    :: [string]        ::    Accepte uniquement une chaine de caractère                                                --- **
-/** ---                                                                                                                                                        --- **
-/** ---            - Description    ::                                                                                                                        --- **
-/** ---                La méthode définie la cible de la requête qui devra traiter les donnée envoyé à l'aide de send()        --- **
-/** ---                Selon la cible, il se peut qu'il soit nécessaire d'indiquer le chemin complet vers le script                --- **
-/** ---                                                                                                                                                        --- **
-/** ---                                                                                                                                                        --- **
-/** ---                                                                                                                                                        --- **
-/** ---        values :                                                                                                                                        --- **
-/** ---        --------                                                                                                                                        --- **
-/** ---            - output :: [xhrQuery]    ::    renvois la classe pour une utilisation successive                                        --- **
-/** ---            - input    :: [string]        ::    Accepte autant de couple "name=value"                                                        --- **
-/** ---                                                                                                                                                        --- **
-/** ---            - Description    ::                                                                                                                        --- **
-/** ---                La méthode permet d'envoyer directement des données sous la forme : nom_de_variable=valeur                --- **
-/** ---                                                                                                                                                        --- **
-/** ---                                                                                                                                                        --- **
-/** ---                                                                                                                                                        --- **
-/** ---        forms :                                                                                                                                        --- **
-/** ---        --------                                                                                                                                        --- **
-/** ---            - output :: [xhrQuery]                ::    renvois la classe pour une utilisation successive                            --- **
-/** ---            - input    :: [HTMLFormElement]        ::    Accepte autant de formulaire que désirée                                        --- **
-/** ---                                                                                                                                                        --- **
-/** ---            - Description    ::                                                                                                                        --- **
-/** ---                La méthode permet d'envoyer toute les données du/des formulaire(s) donnée                                        --- **
-/** ---                                                                                                                                                        --- **
-/** ---                                                                                                                                                        --- **
-/** ---                                                                                                                                                        --- **
-/** ----------------------------------------------------------------------------------------------------------------------- **
-/** ----------------------------------------------------------------------------------------------------------------------- **
+/** ---------------------------------------------------------------------------------------------------------------- **
+/** ---------------------------------------------------------------------------------------------------------------- **
 
     Objectif de la fonction :
     -------------------------
@@ -203,21 +115,21 @@
     Description fonctionnelle :
     ---------------------------
 
-/** ----------------------------------------------------------------------------------------------------------------------- **
-/** ----------------------------------------------------------------------------------------------------------------------- **/
+/** ---------------------------------------------------------------------------------------------------------------- **
+/** ---------------------------------------------------------------------------------------------------------------- **/
 
 
-/** ----------------------------------------------------------------------------------------------------------------------- **
-/** ---                                                                                                                                                        --- **
-/** ---                                                    Déclaration de l'instance xhrQuery                                                        --- **
-/** ---                                                                                                                                                        --- **
-/** ----------------------------------------------------------------------------------------------------------------------- **/
+/** ---------------------------------------------------------------------------------------------------------------- **
+/** ---                                                                                                          --- **
+/** ---                                     Déclaration de l'instance xhrQuery                                   --- **
+/** ---                                                                                                          --- **
+/** ---------------------------------------------------------------------------------------------------------------- **/
 function xhrQuery(){
-    /** -------------------------------------------------------------------------------------------------------------------- **
-    /** ---                                                                                                                                                    --- **
-    /** ---                                            Déclaration des méthodes de l'instance xhrQuery                                            --- **
-    /** ---                                                                                                                                                    --- **
-    /** -------------------------------------------------------------------------------------------------------------------- **/
+	/** ------------------------------------------------------------------------------------------------------------ **
+	/** ---                                                                                                      --- **
+	/** ---                           Déclaration des méthodes de l'instance xhrQuery                            --- **
+	/** ---                                                                                                      --- **
+	/** ------------------------------------------------------------------------------------------------------------ **/
     this.xhr_engine = null;              // XMLHttpRequest :: Moteur AJAX
     this.xhr_errors = [];                // Array          :: Liste des erreurs enregistrées
     this.xhr_executed = 0;               // Number         :: Nombre d'éxecution réussie
@@ -235,13 +147,20 @@ function xhrQuery(){
     this.xhr_username = '';
     this.xhr_password = '';
 
-    
-    /** ------------------------------------------------------------------------------------------------------------ **
-    /** ---                                                                                                      --- **
-    /** ---                               Déclaration des méthodes de l'instance xhrQuery                        --- **
-    /** ---                                                                                                      --- **
-    /** ------------------------------------------------------------------------------------------------------------ **/
-    /** > Méthode de déclaration de la fonction de retour callback **/
+
+	/** ------------------------------------------------------------------------------------------------------------ **
+	/** ---                                                                                                      --- **
+	/** ---                           Déclaration des méthodes de l'instance xhrQuery                            --- **
+	/** ---                                                                                                      --- **
+	/** ------------------------------------------------------------------------------------------------------------ **/
+
+	/**
+	 * La fonction de callback est la fonction qui traiter la réponse retournée par le serveur
+	 *
+	 * @args {Functions} accepte x fonctions en paramètre
+	 *
+	 * @returns {xhrQuery}
+	 */
     this.callbacks = function(){
         /** Parcourir les arguments **/
         for(var i = 0; i < arguments.length; i++){
@@ -273,10 +192,14 @@ function xhrQuery(){
     this.password = function (sPassword) {
         this.xhr_password = sPassword;
     };
-    
-    
-    /** -------------------------------------------------------------------------------------------------------------------- **/
-    /** > Méthode pour ajouter les données d'un formulare passé en argument **/
+
+	/**
+	 * La méthode permet d'envoyer toute les données du/des formulaire(s) donnée.
+	 *
+	 * @param {HTMLFormElement} form   Accepte autant de formulaire que désirée
+	 *
+	 * @returns {xhrQuery}   Renvoie la classe pour une utilisation successive
+	 */
     this.forms = function(form){
         /** Au moins un argument est attendu **/
         if(form === undefined){
@@ -299,10 +222,14 @@ function xhrQuery(){
         return this;
     };
 
-
-    /** -------------------------------------------------------------------------------------------------------------------- **/
-    /** > Méthode pour récupérer directement la réponse de l'appel asynchrone **/
-    this.get = function(index) {
+	/**
+	 * Return the last XMLHttpRequest responses (by index).
+	 *
+	 * @param {Number} index  Index of the responses starting from 0.
+	 *
+	 * @returns {*}
+	 */
+	this.get = function(index) {
         // Si l'arguement n'est pas fournis, la réponse est la dernière exécution.
         if (index === undefined) index = this.xhr_executed;
         // Tenter de paser la réponse.
@@ -312,10 +239,15 @@ function xhrQuery(){
 
         return this.xhr_response[index];
     };
-    
-    
-    /** -------------------------------------------------------------------------------------------------------------------- **/
-    /** > Méthode de déclaration des champs input de type text **/
+
+	/**
+	 * La fonction parcour l'ensemble des arguments à la recherche d'un couple nom de variable / valeur.
+	 * La fonction est autonôme. Elle determine toutes les infos elle-même.
+	 *
+	 * @args {String|HTMLElement} Accepte des id sous forme de chaine ou des elements HTML input
+	 *
+	 * @returns {xhrQuery} renvois la classe pour une utilisation successive
+	 */
     this.inputs = function(){
         /** Parcourir les arguments donnée en paramètre **/
         for(var i = 0; i < arguments.length; i++){
@@ -418,8 +350,12 @@ function xhrQuery(){
         return this;
     };
 
-    // header, value
-    // Object {<header>: value}
+	/**
+	 * Set HTTP Request Headers
+	 *
+	 * @param {String|Object} mHeader  Header Name / Object with headers name with their values.
+	 * @param {String} sValue          Header value when mHeader is a string.
+	 */
     this.headers = function (mHeader, sValue) {
         console.log(mHeader);
         // Simple form - Header Name = Value
@@ -451,16 +387,30 @@ function xhrQuery(){
         console.log("-----------------------")
     };
 
+	/**
+	 * Set flag withCredentials to true (by default) to allow using
+	 * cookie and other authentication data for requests made in CORS way.
+	 *
+	 * @param {Boolean} bState Default to true, set false to disable it.
+	 *
+	 * @returns {xhrQuery}
+	 *
+	 * @constructor
+	 */
     this.CORSUseCredentials = function (bState = true) {
         this.xhr_with_cred = (bState);
 
         return this;
     };
-    
-    
-    /** -------------------------------------------------------------------------------------------------------------------- **/
-    /** > Méthode de déclaration de la méthode d'envoie de données **/
-    this.method = function(method){
+
+	/**
+	 *  La fonction définie le mode d'émission des données pour la méthode send().
+	 *
+	 * @param {String} method   Accepte 'get' ou 'post'
+	 *
+	 * @returns {xhrQuery} renvois la classe pour une utilisation successive
+	 */
+	this.method = function(method){
         /** Déclaration des méthode autorisée **/
         var methods = ['get', 'post'];
 
@@ -477,10 +427,14 @@ function xhrQuery(){
         /** auto-renvois **/
         return this;
     };
-    
-    
-    /** -------------------------------------------------------------------------------------------------------------------- **/
-    /** > Méthode de déclaration de la méthode d'envoie de données **/
+
+	/**
+	 * La méthode définie la fonction de traitement de l'avancement d'un upload de fichier.
+	 *
+	 * @param {Function} progress   Fonction de traitement pour la barre de progression.
+	 *
+	 * @returns {xhrQuery} Renvoie la classe pour une utilisation successive
+	 */
     this.progress = function(progress){
         /** Controller que le paramètre donné est bien une fonction **/
         if(typeof(progress) === 'function'){
@@ -493,10 +447,13 @@ function xhrQuery(){
         /** auto-renvois **/
         return this;
     };
-    
-    
-    /** -------------------------------------------------------------------------------------------------------------------- **/
-    /** > Méthode d'envois de la requête **/
+
+	/**
+	 *  La méthode déclenche l'envois de la requête auprès de la cible à l'aide des données saisie.
+	 *  La methodes send() doit être toujours invoquer en dernier, sinon les donnée suivante ne seront pas traité
+	 *
+	 * @returns {xhrQuery} Renvoie la classe pour une utilisation successive
+	 */
     this.send = function(){
         var query_sent = true;
         
@@ -620,21 +577,30 @@ function xhrQuery(){
 
         return this;
     };
-    
-    
-    /** -------------------------------------------------------------------------------------------------------------------- **/
-    /** > Méthode de déclaration de la cible **/
-    this.target = function(target){
+
+	/**
+	 * La méthode définie la cible de la requête qui devra traiter les donnée envoyé à l'aide de send().
+	 * Selon la cible, il se peut qu'il soit nécessaire d'indiquer le chemin complet vers le script.
+	 *
+	 * @param {String} target    Chemin vers le script.
+	 *
+	 * @returns {xhrQuery} Renvoie la classe pour une utilisation successive.
+	 */
+	this.target = function(target){
         /** Assignation de la cible **/
         this.xhr_target = target;
         
         return this;
     };
-    
-    
-    /** -------------------------------------------------------------------------------------------------------------------- **/
-    /** > Méthode de déclaration de la cible **/
-    this.values = function(){
+
+	/**
+	 *  La méthode permet d'envoyer directement des données sous la forme : nom_de_variable=valeur.
+	 *
+	 * @args {String}   Accepte autant de couple "name=value".
+	 *
+	 * @returns {xhrQuery}  Renvoie la classe pour une utilisation successive
+	 */
+	this.values = function(){
         for(var i = 0; i < arguments.length; i++){
             var value = arguments[i].split('=');
             var value_name = value[0];
@@ -647,11 +613,13 @@ function xhrQuery(){
         /** auto-renvois **/
         return this;
     };
-    
-    
-    /** -------------------------------------------------------------------------------------------------------------------- **/
-    /** > Méthode de déclaration de la cible **/
-    this.xhr = function(){
+
+	/**
+	 * Create the appropriate XMLHttpRequest object for current browser.
+	 *
+	 * @returns {ActiveXObject|XMLHttpRequest}
+	 */
+	this.xhr = function(){
         var xhr = null;
 
         /** S'il s'agit d'Internet Explorer de Microsoft **/
@@ -673,11 +641,11 @@ function xhrQuery(){
 
 
 
-    /** ------------------------------------------------------------------------------------------------------------ **
-    /** ---                                                                                                      --- **
-    /** ---                                 Traitement interne de la classe xhrQuery                             --- **
-    /** ---                                                                                                      --- **
-    /** ------------------------------------------------------------------------------------------------------------ **/
+	/** ------------------------------------------------------------------------------------------------------------ **
+	/** ---                                                                                                      --- **
+	/** ---                           Traitement interne de la classe xhrQuery                                   --- **
+	/** ---                                                                                                      --- **
+	/** ------------------------------------------------------------------------------------------------------------ **/
     // Ajouter une callbacks "interne" pour stocker la réponse
     this.callbacks(function(response) {
         this.xhr_response.push(response);
