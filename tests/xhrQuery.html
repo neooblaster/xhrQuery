@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../src/xhrQuery.js" ></script>
+    <title>Document</title>
+    <script>
+        function testXhr() {
+            eval(document.querySelector('textarea').value);
+        }
+
+        // console.log = function () {
+        //     for (var arg in arguments) {
+        //         document.querySelector('pre').innerHTML = '\n' + arguments[arg];
+        //     }
+        // };
+    </script>
+</head>
+<body>
+
+    <textarea style="width: 400px; height: 200px;">
+        new xhrQuery()
+        .target('https://viseo-rpa-dev.atlassian.net/rest/api/3/issue/RL-102')
+        .method('get')
+        .send();
+    </textarea>
+    <script type="text/javascript">
+        var x = new xhrQuery();
+        x.target("https://viseo-rpa-dev.atlassian.net/rest/api/3/issue/RL-102");
+        x.method('get');
+        x.username('nicolas.dupre@viseo.com');
+        x.password('v8iEcRj9ZDmiIonGbZG82EB5');
+        x.send();
+    </script>
+    <br />
+    <input type="button" value="test" onclick="testXhr()"/>
+    <br />
+    <pre></pre>
+
+</body>
+</html>

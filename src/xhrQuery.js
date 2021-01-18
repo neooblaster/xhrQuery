@@ -1,34 +1,60 @@
-/** ----------------------------------------------------------------------------------------------------------------------- ** 
-/** ----------------------------------------------------------------------------------------------------------------------- ** 
-/** ---																																						--- **
-/** --- 											----------------------------------------------- 											--- **
-/** ---															{ X H R Q U E R Y . J S }															--- **
-/** --- 											----------------------------------------------- 											--- **
-/** ---																																						--- **
-/** ---		AUTEUR 	: Neoblaster																													--- **
-/** ---																																						--- **
-/** ---		RELEASE	: 27.03.2017																													--- **
-/** ---																																						--- **
-/** ---		VERSION	: 1.4																																--- **
-/** ---																																						--- **
-/** ---																																						--- **
-/** --- 														-----------------------------															--- **
-/** --- 															 { C H A N G E L O G } 																--- **
-/** --- 														-----------------------------															--- **
-/** ---																																						--- **
-/** ---		VERSION 1.4 : 27.03.2017																												--- **
-/** ---		------------------------																												--- **
-/** ---			- Prise en charge des champs textarea, uniquement en method POST														--- **
-/** ---																																						--- **
-/** ---		VERSION 1.3 : 20.03.2017																												--- **
-/** ---		------------------------																												--- **
+/** ---------------------------------------------------------------------------------------------------------------- **
+/** ---------------------------------------------------------------------------------------------------------------- **
+/** ---                                                                                                          --- **
+/** ---							 -----------------------------------------------							  --- **
+/** ---										   { X H R Q U E R Y . J S }									  --- **
+/** ---							 -----------------------------------------------							  --- **
+/** ---																										  --- **
+/** ---		AUTEUR	 : Neoblaster																		   --- **
+/** ---		RELEASE	: 18.01.2021																		   --- **
+/** ---		VERSION	: 1.5																				  --- **
+/** ---																										  --- **
+/** ---																										  --- **
+/** ---														 -----------------------------					--- **
+/** ---															  { C H A N G E L O G }					   --- **
+/** ---														 -----------------------------					--- **
+/** ---                                                                                                          --- **
+/** ---    @TODO : Gestion des code status                                                                       --- **
+/** ---    @TODO : définition de qui est une erreur qui est ok                                                   --- **
+/** ---    @TODO : définition du mode de réponse (xml, plaintext, json=>parsé)                                   --- **
+/** ---                                                                                                          --- **
+/** ---                                                                                                          --- **
+/** ---		VERSION 1.5 : 29.07.2018																		  --- **
+/** ---		------------------------																		  --- **
+ /** ---			- Ajout de la méthode 'CORSUseCredentials()' qui permet l'utilisation d'identification			   --- **
+ /** ---			effectuée sur d'autre site en CORS			   --- **
+ /** ---			- Si l'entête 'Authorization' n'est pas défini et que username() et/ou password()			   --- **
+ /** ---			ont été utilisé, l'identifiant sera encodé et l'entête Authorization défini avec la valeur			   --- **
+ /** ---			encodée			   --- **
+ /** ---			- Ajout de la méthode 'password()' pour définir le mot de passe de connexion pour la méthode			   --- **
+ /** ---		      d'authentification basique			   --- **
+ /** ---			- Ajout de la méthode 'username()' pour définir l'identifiant de connexion pour la méthode			   --- **
+ /** ---		      d'authentification basique			   --- **
+/** ---			- Ajout d'une méthode pour passer les entêtes HTTP : .headers() :			   --- **
+/** ---				- Deux modes d'utilisations :			   --- **
+/** ---					A.) Deux arguments :		   --- **
+/** ---						mHeader : Chaine de texte - Nom de l'entête HTTP		   --- **
+/** ---						sValue  : Chaine de texte - Valeur de l'entête HTTP		   --- **
+/** ---					A.) Un object :		   --- **
+/** ---						{property: value} : **
+/** ---							property = entête HTTP          --- **
+/** ---							value    = valeur entête HTTP   --- **
+/** ---			- Ajout d'une méthode pour récupérer la réponse au lieu en plus de la callbacks			   --- **
+/** ---			- La méthode callbacks n'est plus obligatoire												 --- **
+/** ---																										  --- **
+/** ---		VERSION 1.4 : 27.03.2017																		  --- **
+/** ---		------------------------																		  --- **
+/** ---			- Prise en charge des champs textarea, uniquement en method POST							  --- **
+/** ---																										  --- **
+/** ---		VERSION 1.3 : 20.03.2017																		  --- **
+/** ---		------------------------																		  --- **
 /** ---			- Ajout de la méthode forms() qui gère l'assimilation des données comprise dans le formulaire donnée		--- **
 /** ---			- En conséquence amélioration de la fonctions input pour gérer davantage d'input									--- **
 /** ---																																						--- **
 /** ---		VERSION 1.2 : 18.05.2015																												--- **
 /** ---		------------------------																												--- **
 /** ---			- Correction de la méthode inputs qui ne récupérait pas l'argument dans le cas d'un paramètre de type		--- **
-/** ---				object 																																--- **
+/** ---				object																																 --- **
 /** ---																																						--- **
 /** ---		VERSION 1.1 : 16.05.2015																												--- **
 /** ---		------------------------																												--- **
@@ -39,9 +65,9 @@
 /** ---		------------------------																												--- **
 /** ---			- Première release																													--- **
 /** ---																																						--- **
-/** --- 											-----------------------------------------------------										--- **
-/** --- 												{ L I S T E      D E S      M E T H O D E S } 											--- **
-/** --- 											-----------------------------------------------------										--- **
+/** ---											 -----------------------------------------------------										--- **
+/** ---												 { L I S T E	  D E S	  M E T H O D E S }											 --- **
+/** ---											 -----------------------------------------------------										--- **
 /** ---																																						--- **
 /** ---		callbacks :																																	--- **
 /** ---		-----------																																	--- **
@@ -192,23 +218,29 @@ function xhrQuery(){
 	/** ---											Déclaration des méthodes de l'instance xhrQuery											--- **
 	/** ---																																					--- **
 	/** -------------------------------------------------------------------------------------------------------------------- **/
-	this.xhr_engine = null;						// XMLHttpRequest :: Moteur AJAX
-	this.xhr_errors = [];						// Array 			:: Liste des erreurs enregistrées
-	this.xhr_callbacks = [];					// Array				:: Liste des fonctions qui doivent traiter LE resultat (resultat unique)
-	this.xhr_form_data = new FormData();	// Object 			:: Instance contenant les données envoyée par
-	this.xhr_method = 'post';					// String 			:: Méthode d'envoie de donnée {post} ou {get}
-	this.xhr_progress = null;					// Function 		:: Fonction d'affichage de l'avancement du transfert
-	this.xhr_raw_data = [];						// Array 			:: Liste des couples : nom=valeur pour un envois de donnée en method GET
-	this.xhr_target = null;						// String 			:: Script serveur cible
-	this.xhr_send_file = false;				// Boolean			:: Indique si des données issue d'un input type file à été inséré
-	this.xhr_warn_textarea = false;			// Boolean			:: Indique la présence de champs textarea (incompatible avec la méthode get)
+	this.xhr_engine = null;			  // XMLHttpRequest :: Moteur AJAX
+	this.xhr_errors = [];				// Array		  :: Liste des erreurs enregistrées
+	this.xhr_executed = 0;			   // Number		 :: Nombre d'éxecution réussie
+	this.xhr_callbacks = [];			 // Array		  :: Liste des fonctions qui doivent traiter LE resultat (resultat unique)
+	this.xhr_form_data = new FormData(); // Object		 :: Instance contenant les données envoyée par
+	this.xhr_method = 'post';			// String		 :: Méthode d'envoie de donnée {post} ou {get}
+	this.xhr_progress = null;			// Function	   :: Fonction d'affichage de l'avancement du transfert
+	this.xhr_raw_data = [];			  // Array		  :: Liste des couples : nom=valeur pour un envois de donnée en method GET
+	this.xhr_response = [];			  // Array		  :: Liste des réponses des requêtes XMLHttpRequest
+	this.xhr_target = null;			  // String		 :: Script serveur cible
+	this.xhr_send_file = false;		  // Boolean		:: Indique si des données issue d'un input type file à été inséré
+	this.xhr_warn_textarea = false;	  // Boolean		:: Indique la présence de champs textarea (incompatible avec la méthode get)
+	this.xhr_headers = {};
+	this.xhr_with_cred = false;
+	this.xhr_username = '';
+	this.xhr_password = '';
 
 	
-	/** -------------------------------------------------------------------------------------------------------------------- **
-	/** ---																																					--- **
-	/** ---											Déclaration des méthodes de l'instance xhrQuery											--- **
-	/** ---																																					--- **
-	/** -------------------------------------------------------------------------------------------------------------------- **/
+	/** ------------------------------------------------------------------------------------------------------------ **
+	/** ---																									  --- **
+	/** ---							   Déclaration des méthodes de l'instance xhrQuery						--- **
+	/** ---																									  --- **
+	/** ------------------------------------------------------------------------------------------------------------ **/
 	/** > Méthode de déclaration de la fonction de retour callback **/
 	this.callbacks = function(){
 		/** Parcourir les arguments **/
@@ -222,6 +254,24 @@ function xhrQuery(){
 		}
 		
 		return this;
+	};
+
+	/**
+	 * Define the username for basic authentication.
+	 *
+	 * @param {String} sUsername Username.
+	 */
+	this.username = function (sUsername) {
+		this.xhr_username = sUsername;
+	};
+
+	/**
+	 * Define the password for basic authentication.
+	 *
+	 * @param {String} sPassword Password.
+	 */
+	this.password = function (sPassword) {
+		this.xhr_password = sPassword;
 	};
 	
 	
@@ -247,6 +297,20 @@ function xhrQuery(){
 		}
 		
 		return this;
+	};
+
+
+	/** -------------------------------------------------------------------------------------------------------------------- **/
+	/** > Méthode pour récupérer directement la réponse de l'appel asynchrone **/
+	this.get = function(index) {
+		// Si l'arguement n'est pas fournis, la réponse est la dernière exécution.
+		if (index === undefined) index = this.xhr_executed;
+		// Tenter de paser la réponse.
+		index = parseInt(index);
+		// Si ça à échoué, utiliser la dernière exécution.
+		if (isNaN(index)) index = this.xhr_executed;
+
+		return this.xhr_response[index];
 	};
 	
 	
@@ -353,6 +417,45 @@ function xhrQuery(){
 		
 		return this;
 	};
+
+	// header, value
+	// Object {<header>: value}
+	this.headers = function (mHeader, sValue) {
+		console.log(mHeader);
+		// Simple form - Header Name = Value
+		if (typeof mHeader === "string") {
+			if (sValue === null) {
+				this.xhr_errors.push({
+					"error_level":2,
+					"error_message":"xhrQuery::headers() :: argument 'sValue' should not be null."}
+				);
+			}
+			this.xhr_headers[mHeader] = sValue;
+		}
+
+		// Object form
+		else if (typeof mHeader === 'object') {
+			for (var header in mHeader) {
+				if (mHeader[header] === null) {
+					this.xhr_errors.push({
+						"error_level":2,
+						"error_message": `xhrQuery::headers() :: provided header '${header}' shoud not be null`}
+					);
+				}
+				this.xhr_headers[header] = mHeader[header];
+			}
+		}
+		else {
+			console.error("Can not determine type of provided argument mHeader")
+		}
+		console.log("-----------------------")
+	};
+
+	this.CORSUseCredentials = function (bState = true) {
+		this.xhr_with_cred = (bState);
+
+		return this;
+	};
 	
 	
 	/** -------------------------------------------------------------------------------------------------------------------- **/
@@ -401,7 +504,15 @@ function xhrQuery(){
 		if(this.xhr_target !== null){
 			/** Création de l'instance XMLHttpRequest **/
 			this.xhr_engine = new this.xhr();
-			
+
+			// Define Authentication Basic mode when credentials are provided
+			// And if user not set himself Authorization header
+			if (this.xhr_username || this.xhr_password) {
+				if (!this.xhr_headers.Authorization) {
+					var credString = `${this.xhr_username}:${this.xhr_password}`;
+					this.xhr_headers.Authorization = `Basic ${btoa(credString)}`;
+				}
+			}
 			
 			/** Déclaration de la fonction de gestion des changements d'état de la requête si définie **/
 			if(this.xhr_callback !== null){
@@ -412,6 +523,9 @@ function xhrQuery(){
 							this.xhr_callbacks[i](this.xhr_engine.responseText);
 						}
 						//this.xhr_callback[0](this.xhr_engine.responseText);
+						// @TODO implement responseHandling
+					} else {
+						//@TODO implement error handling
 					}
 				}.bind(this);
 			} else {
@@ -436,9 +550,14 @@ function xhrQuery(){
 				case 'get':
 					/** Convertir les donnée raw en chaine URL **/
 					var url_vars = null;
+					var url = this.xhr_target;
 					
 					for(var i = 0; i < this.xhr_raw_data.length; i++){
 						url_vars = (url_vars !== null) ? url_vars+'&'+this.xhr_raw_data[i] : this.xhr_raw_data[i];
+					}
+
+					if (url_vars) {
+						url = this.xhr_target+'?'+url_vars;
 					}
 					
 					/** Emettre l'alerte si des données de type input file on été saisies **/
@@ -452,11 +571,24 @@ function xhrQuery(){
 					}
 					
 					/** Envoyer les données **/
-					this.xhr_engine.open("GET", this.xhr_target+'?'+url_vars, true);
+					this.xhr_executed++;
+					this.xhr_engine.open("GET", url, true);
+					for (var header in this.xhr_headers) {
+						if (!this.xhr_headers.hasOwnProperty(header)) continue;
+						this.xhr_engine.setRequestHeader(header, this.xhr_headers[header]);
+					}
+					this.xhr_engine.withCredentials = this.xhr_with_cred;
 					this.xhr_engine.send(null);
 				break;
+
 				case 'post':
+					this.xhr_executed++;
 					this.xhr_engine.open("POST", this.xhr_target, true);
+					for (var header in this.xhr_headers) {
+						if (!this.xhr_headers.hasOwnProperty(header)) continue;
+						this.xhr_engine.setRequestHeader(header, this.xhr_headers[header]);
+					}
+					this.xhr_engine.withCredentials = this.xhr_with_cred;
 					this.xhr_engine.send(this.xhr_form_data);
 				break;
 			}
@@ -485,10 +617,8 @@ function xhrQuery(){
 				}
 			}
 		}
-		
-		
-		/** Indicateur d'execution de la fonction **/
-		return query_sent;
+
+		return this;
 	};
 	
 	
@@ -540,6 +670,18 @@ function xhrQuery(){
 
 		return xhr;
 	};
+
+
+
+	/** ------------------------------------------------------------------------------------------------------------ **
+	/** ---																									  --- **
+	/** ---								 Traitement interne de la classe xhrQuery							 --- **
+	/** ---																									  --- **
+	/** ------------------------------------------------------------------------------------------------------------ **/
+	// Ajouter une callbacks "interne" pour stocker la réponse
+	this.callbacks(function(response) {
+		this.xhr_response.push(response);
+	}.bind(this));
 	
 	
 	/** auto-renvois **/
