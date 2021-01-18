@@ -357,7 +357,6 @@ function xhrQuery(){
 	 * @param {String} sValue          Header value when mHeader is a string.
 	 */
     this.headers = function (mHeader, sValue) {
-        console.log(mHeader);
         // Simple form - Header Name = Value
         if (typeof mHeader === "string") {
             if (sValue === null) {
@@ -382,9 +381,8 @@ function xhrQuery(){
             }
         }
         else {
-            console.error("Can not determine type of provided argument mHeader")
+            console.error("xhrQuery::headers() :: Can not determine type of provided argument 'mHeader'");
         }
-        console.log("-----------------------")
     };
 
 	/**
