@@ -32,7 +32,10 @@
         x.target("https://viseo-rpa-dev.atlassian.net/rest/api/3/issue/RL-102");
         x.method('get');
         x.username('nicolas.dupre@viseo.com');
-        x.password('v8iEcRj9ZDmiIonGbZG82EB5');
+        x.password('i-v8iEcRj9ZDmiIonGbZG82EB5');
+        x.errors(function (el) {
+            console.log(el);
+        });
         x.send();
     </script>
     <br />

@@ -134,6 +134,7 @@ function xhrQuery(){
     this.xhr_errors = [];                // Array          :: Liste des erreurs enregistrées
     this.xhr_executed = 0;               // Number         :: Nombre d'éxecution réussie
     this.xhr_callbacks = [];             // Array          :: Liste des fonctions qui doivent traiter LE resultat (resultat unique)
+    this.xhr_errorbacks = [];                // Array          :: Liste des fonctions qui s'exécute en cas d'échec
     this.xhr_form_data = new FormData(); // Object         :: Instance contenant les données envoyée par
     this.xhr_method = 'post';            // String         :: Méthode d'envoie de donnée {post} ou {get}
     this.xhr_progress = null;            // Function       :: Fonction d'affichage de l'avancement du transfert
@@ -172,6 +173,27 @@ function xhrQuery(){
             }
         }
         
+        return this;
+    };
+
+    /**
+     * Définie les fonctions à appeler en cas d'échec
+     *
+     * @args {Functions} accepte x fonctions en paramètre
+     *
+     * @returns {xhrQuery}
+     */
+    this.errors = function(){
+        /** Parcourir les arguments **/
+        for(var i = 0; i < arguments.length; i++){
+            /** Tester l'arguments = - Si l'argument est une fonctions, alors on l'admet **/
+            if(typeof(arguments[i]) === 'function'){
+                this.xhr_errorbacks.push(arguments[i]);
+            } else {
+                this.xhr_errors.push({"error_level":2,"error_message":"xhrQuery::callback() :: The input callback '"+arguments[i]+"' is not a function."});
+            }
+        }
+
         return this;
     };
 
@@ -478,9 +500,11 @@ function xhrQuery(){
                             this.xhr_callbacks[i](this.xhr_engine.responseText);
                         }
                         //this.xhr_callback[0](this.xhr_engine.responseText);
+                    } else if(this.xhr_engine.readyState === 4) {
                         // @TODO implement responseHandling
-                    } else {
-                        //@TODO implement error handling
+                        for (var i = 0; i < this.xhr_errorbacks.length; i++) {
+                            this.xhr_errorbacks[i](this.xhr_engine.response);
+                        }
                     }
                 }.bind(this);
             } else {
