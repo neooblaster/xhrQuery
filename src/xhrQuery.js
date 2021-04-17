@@ -19,7 +19,7 @@
 /** ---    @TODO : définition du mode de réponse (xml, plaintext, json=>parsé)                                   --- **
 /** ---                                                                                                          --- **
 /** ---                                                                                                          --- **
-/** ---        VERSION 1.5-RC2 : 17.04.2021                                                                      --- **
+/** ---        VERSION 1.5-RC3 : 17.04.2021                                                                      --- **
 /** ---        ----------------------------                                                                      --- **
 /** ---            - Ajout de deux méthodes pour configurer le mode synchrone/asynchrone :                       --- **
 /** ---                 - async() -> Met le mode asynchrone                                                      --- **
