@@ -19,6 +19,12 @@
 /** ---    @TODO : définition du mode de réponse (xml, plaintext, json=>parsé)                                   --- **
 /** ---                                                                                                          --- **
 /** ---                                                                                                          --- **
+/** ---        VERSION 1.5-RC2 : 17.04.2021                                                                      --- **
+/** ---        ----------------------------                                                                      --- **
+/** ---            - Ajout de deux méthodes pour configurer le mode synchrone/asynchrone :                       --- **
+/** ---                 - async() -> Met le mode asynchrone                                                      --- **
+/** ---                 - sync() -> Met le mode synchrone                                                        --- **
+/** ---                                                                                                          --- **
 /** ---        VERSION 1.5 : 29.07.2018                                                                          --- **
 /** ---        ------------------------                                                                          --- **
 /** ---            - Ajout de la méthode 'CORSUseCredentials()' qui permet l'utilisation d'identification        --- **
@@ -134,7 +140,7 @@ function xhrQuery(){
     this.xhr_errors = [];                // Array          :: Liste des erreurs enregistrées
     this.xhr_executed = 0;               // Number         :: Nombre d'éxecution réussie
     this.xhr_callbacks = [];             // Array          :: Liste des fonctions qui doivent traiter LE resultat (resultat unique)
-    this.xhr_errorbacks = [];                // Array          :: Liste des fonctions qui s'exécute en cas d'échec
+    this.xhr_errorbacks = [];            // Array          :: Liste des fonctions qui s'exécute en cas d'échec
     this.xhr_form_data = new FormData(); // Object         :: Instance contenant les données envoyée par
     this.xhr_method = 'post';            // String         :: Méthode d'envoie de donnée {post} ou {get}
     this.xhr_progress = null;            // Function       :: Fonction d'affichage de l'avancement du transfert
@@ -147,6 +153,7 @@ function xhrQuery(){
     this.xhr_with_cred = false;
     this.xhr_username = '';
     this.xhr_password = '';
+    this.xhr_async = true;               // Boolean        :: Indique si l'appel est synchrone ou asynchrone
 
 
 	/** ------------------------------------------------------------------------------------------------------------ **
@@ -154,6 +161,17 @@ function xhrQuery(){
 	/** ---                           Déclaration des méthodes de l'instance xhrQuery                            --- **
 	/** ---                                                                                                      --- **
 	/** ------------------------------------------------------------------------------------------------------------ **/
+
+    /**
+     * Défini l'appel XHR comme étant asynchrone.
+     *
+     * @return {xhrQuery}
+     */
+	this.async = function () {
+        this.xhr_async = true;
+
+        return this;
+    };
 
 	/**
 	 * La fonction de callback est la fonction qui traiter la réponse retournée par le serveur
@@ -551,7 +569,7 @@ function xhrQuery(){
                     
                     /** Envoyer les données **/
                     this.xhr_executed++;
-                    this.xhr_engine.open("GET", url, true);
+                    this.xhr_engine.open("GET", url, this.xhr_async);
                     for (var header in this.xhr_headers) {
                         if (!this.xhr_headers.hasOwnProperty(header)) continue;
                         this.xhr_engine.setRequestHeader(header, this.xhr_headers[header]);
@@ -562,7 +580,7 @@ function xhrQuery(){
 
                 case 'post':
                     this.xhr_executed++;
-                    this.xhr_engine.open("POST", this.xhr_target, true);
+                    this.xhr_engine.open("POST", this.xhr_target, this.xhr_async);
                     for (var header in this.xhr_headers) {
                         if (!this.xhr_headers.hasOwnProperty(header)) continue;
                         this.xhr_engine.setRequestHeader(header, this.xhr_headers[header]);
@@ -596,6 +614,17 @@ function xhrQuery(){
                 }
             }
         }
+
+        return this;
+    };
+
+    /**
+     * Défini l'appel XHR comme étant synchrone
+     *
+     * @return {xhrQuery}
+     */
+    this.sync = function () {
+        this.xhr_async = false;
 
         return this;
     };
