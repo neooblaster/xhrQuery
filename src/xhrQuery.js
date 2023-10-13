@@ -19,6 +19,10 @@
 /** ---    @TODO : définition du mode de réponse (xml, plaintext, json=>parsé)                                   --- **
 /** ---                                                                                                          --- **
 /** ---                                                                                                          --- **
+/** ---        VERSION 1.6 : 13.10.2023                                                                          --- **
+/** ---        ----------------------------                                                                      --- **
+/** ---            - Modification de la méthode forms() pour accepter des objets FormData en arguments           --- **
+/** ---                                                                                                          --- **
 /** ---        VERSION 1.5-RC3 : 17.04.2021                                                                      --- **
 /** ---        ----------------------------                                                                      --- **
 /** ---            - Ajout de deux méthodes pour configurer le mode synchrone/asynchrone :                       --- **
@@ -253,6 +257,11 @@ function xhrQuery(){
                 for(var el = 0; el < arguments[arg].elements.length; el++){
                     var element = arguments[arg].elements[el];
                     this.inputs(element);
+                }
+            }
+            else if (arguments[arg] instanceof FormData) {
+                for (let oEntry of arguments[arg].entries()) {
+                    this.xhr_form_data.append(oEntry[0], oEntry[1]);
                 }
             } else {
                 this.xhr_errors.push({"error_level":2,"error_message":"xhrQuery::forms() :: Argument n°"+arg+" supplied is invalid : ["+typeof(arguments[arg])+"] "+arguments[arg]+"."});
